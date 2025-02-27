@@ -10,4 +10,5 @@ const enrollmentSchema = new mongoose.Schema({
   enrolledAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("Enrollment", enrollmentSchema);
+const Enrollment = mongoose.model("Enrollment", enrollmentSchema);
+module.exports = Enrollment;

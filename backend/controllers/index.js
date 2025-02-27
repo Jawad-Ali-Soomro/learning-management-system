@@ -1,3 +1,3 @@
-const { new_user } = require("./user.contoller");
+const { new_user, login_user } = require("./user.contoller");
 
-new_user;
+module.exports = { new_user, login_user };

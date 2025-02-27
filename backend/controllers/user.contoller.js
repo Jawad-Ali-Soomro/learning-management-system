@@ -1,9 +1,8 @@
-import { comparePassword } from "../middlewares";
-import { signJsonwebtoken } from "../middlewares/jwt.sign";
+const { comparePassword, signJsonwebtoken } = require("../middlewares");
 
 const { User } = require("../models");
 
-export const new_user = async (req, res) => {
+const new_user = async (req, res) => {
   try {
     const { email } = req.body;
     const findUser = await User.findOne({ email });
@@ -31,7 +30,7 @@ export const new_user = async (req, res) => {
   }
 };
 
-export const login_user = async (req, res) => {
+const login_user = async (req, res) => {
   try {
     const { password, email } = req.body;
     const findUser = await User.findOne({ email });
@@ -63,3 +62,5 @@ export const login_user = async (req, res) => {
     });
   }
 };
+
+module.exports = { new_user, login_user };

@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-export const signJsonwebtoken = async (data) => {
+const signJsonwebtoken = async (data) => {
   try {
     const signedData = await jwt.sign(data, process.env.DEV_JWT_SECRET);
     if (signedData) {
@@ -12,3 +12,5 @@ export const signJsonwebtoken = async (data) => {
     });
   }
 };
+
+module.exports = signJsonwebtoken;

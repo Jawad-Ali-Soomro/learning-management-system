@@ -1,3 +1,4 @@
-const { comparePassword } = require("./decrypt.password");
+const comparePassword = require("./decrypt.password");
+const signJsonwebtoken = require("./jwt.sign");
 
-module.exports = { comparePassword };
+module.exports = { comparePassword, signJsonwebtoken };

@@ -8,9 +8,7 @@ const comparePassword = async (password, userPassword) => {
       return false;
     }
   } catch (error) {
-    return res.status(500).json({
-      message: "Error while decrypting...",
-    });
+    console.log(error);
   }
 };
 

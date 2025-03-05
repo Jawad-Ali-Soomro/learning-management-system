@@ -11,4 +11,4 @@ const signJsonwebtoken = async (data) => {
   }
 };
 
-module.exports = signJsonwebtoken;
+module.exports = signJsonwebtoken; 

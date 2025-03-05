@@ -1,4 +1,8 @@
-const { comparePassword, signJsonwebtoken } = require("../middlewares");
+const {
+  comparePassword,
+  signJsonwebtoken,
+  decryptData,
+} = require("../middlewares");
 
 const { User } = require("../models");
 
@@ -31,39 +35,47 @@ const new_user = async (req, res) => {
 };
 
 const login_user = async (req, res) => {
-  // try {
-  const { password, email } = req.body;
-  const findUser = await User.findOne({ email: req.body.email });
-  console.log(email);
+  try {
+    const { password, email } = req.body;
+    const findUser = await User.findOne({ email: req.body.email });
 
-  if (!findUser) {
-    return res.status(300).json({
-      message: "Account not found...",
+    if (!findUser) {
+      return res.status(300).json({
+        message: "Account not found...",
+      });
+    }
+    const comparedPassword = await comparePassword(password, findUser.password);
+    if (!comparedPassword) {
+      return res.status(301).json({
+        message: "Invalid Password...",
+      });
+    }
+    const token = await signJsonwebtoken(findUser);
+    if (!token) {
+      return res.status(302).json({
+        message: "Error while generating token...",
+      });
+    }
+    return res.status(200).json({
+      message: "Logged in...",
+      user: findUser,
+      token,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Server error...",
+      error: error.message,
     });
   }
-  const comparedPassword = await comparePassword(password, findUser.password);
-  if (!comparedPassword) {
-    return res.status(301).json({
-      message: "Invalid Password...",
-    });
-  }
-  const token = await signJsonwebtoken(findUser);
-  if (!token) {
-    return res.status(302).json({
-      message: "Error while generating token...",
-    });
-  }
-  return res.status(200).json({
-    message: "Logged in...",
-    user: findUser,
-    token,
-  });
-  // } catch (error) {
-  //   return res.status(500).json({
-  //     message: "Server error...",
-  //     error: error.message,
-  //   });
-  // }
 };
 
-module.exports = { new_user, login_user };
+const get_profile = async (req, res) => {
+  const { token } = req.body;
+  const decryptedData = await decryptData(token);
+  return res.status(200).json({
+    message: "Account Found",
+    user: decryptedData,
+  });
+};
+
+module.exports = { new_user, login_user, get_profile };

@@ -8,9 +8,7 @@ const decryptData = async (token) => {
       return false;
     }
   } catch (error) {
-    return res.status(500).json({
-      message: "Error while fetching information...",
-    });
+    console.log(error.message);
   }
 };
 

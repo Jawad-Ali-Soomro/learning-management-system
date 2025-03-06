@@ -78,13 +78,17 @@ const get_profile = async (req, res) => {
   });
 };
 
-const updated_profile = async (req, res) => {
+const update_profile = async (req, res) => {
   try {
     const { user_id } = req.params;
     const found_user = await User.findByIdAndUpdate(user_id, { ...req.body });
-    if (!found_user) {
+    if (found_user) {
       return res.status(404).json({
         message: "User found & updated...",
+      });
+    } else {
+      return res.status(404).json({
+        message: "User not found...",
       });
     }
   } catch (error) {
@@ -94,4 +98,25 @@ const updated_profile = async (req, res) => {
   }
 };
 
-module.exports = { new_user, login_user, get_profile, updated_profile };
+const get_user = async (req, res) => {
+  const { user_id } = req.params;
+  const found_user = await User.findById(user_id);
+  if (!found_user) {
+    return res.status(404).json({
+      message: "User not found...",
+    });
+  } else {
+    return res.status(200).json({
+      message: `${found_user?.length} User Found...`,
+      user: found_user,
+    });
+  }
+};
+
+module.exports = {
+  new_user,
+  login_user,
+  get_profile,
+  update_profile,
+  get_user,
+};

@@ -78,4 +78,20 @@ const get_profile = async (req, res) => {
   });
 };
 
-module.exports = { new_user, login_user, get_profile };
+const updated_profile = async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const found_user = await User.findByIdAndUpdate(user_id, { ...req.body });
+    if (!found_user) {
+      return res.status(404).json({
+        message: "User found & updated...",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+module.exports = { new_user, login_user, get_profile, updated_profile };
